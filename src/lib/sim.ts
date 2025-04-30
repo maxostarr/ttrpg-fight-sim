@@ -71,7 +71,7 @@ export function runSim(attacker: Attacker, defender: Defender, itterations = 100
     }
   } satisfies DamageDistribution));
 
-  for (const result of results) {
+  for (const result of roundResults) {
     const bucketIndex = result.damage - minDamage;
     if (bucketIndex >= 0 && bucketIndex < NUM_BUCKETS) {
       damageDistribution[bucketIndex].count++;

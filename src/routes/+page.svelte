@@ -52,6 +52,7 @@
 		console.log('Running simulation...');
 
 		const results = runSim(attacker, defender, iterations, enableCritDamage);
+		console.log('🚀 ~ runSimulation ~ results:', results);
 		misses = iterations * attacker.attacks.length - results.totalHits;
 		missPercentage = Math.round((misses / (iterations * attacker.attacks.length)) * 100);
 
