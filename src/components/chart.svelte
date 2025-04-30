@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { Chart, BarController, CategoryScale, LinearScale, BarElement } from 'chart.js';
+	import { Chart, BarController, CategoryScale, LinearScale, BarElement } from 'chart.js/auto';
 
 	// Register only the necessary components for bar charts
-	Chart.register(BarController, CategoryScale, LinearScale, BarElement);
+	// Chart.register(BarController, CategoryScale, LinearScale, BarElement);
 
 	// Props: data should be an object with `labels` and `datasets` keys,
 	// for example: { labels: ['Jan', 'Feb'], datasets: [{ label: 'Sales', data: [10, 20], backgroundColor: 'blue' }] }
@@ -55,16 +55,33 @@
 					labels,
 					datasets: [
 						{
-							label: '# of Votes',
+							label: '# of Rounds',
 							data: _data,
 							borderWidth: 1
 						}
 					]
 				},
+
 				options: {
+					plugins: {
+						legend: {
+							title: {
+								display: true,
+								text: 'Damage Distribution',
+								font: {
+									size: 16
+								}
+							}
+						}
+					},
 					scales: {
 						y: {
-							beginAtZero: true
+							beginAtZero: true,
+
+							title: {
+								display: true,
+								text: 'Number of Hits'
+							}
 						}
 					}
 				}

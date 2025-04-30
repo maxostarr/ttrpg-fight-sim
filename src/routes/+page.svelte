@@ -59,13 +59,13 @@
 		labels = results.damageDistribution.map((result) => `${result.range.min}`);
 		datasets[0].data = results.damageDistribution.map((result) => result.count);
 
-		datasets[0].backgroundColor = results.damageDistribution.map((result) =>
-			result.count > 0 ? 'rgba(75, 192, 192, 0.2)' : 'rgba(255, 99, 132, 0.2)'
-		);
+		// datasets[0].backgroundColor = results.damageDistribution.map((result) =>
+		// 	result.count > 0 ? 'rgba(75, 192, 192, 0.2)' : 'rgba(255, 99, 132, 0.2)'
+		// );
 
-		datasets[0].borderColor = results.damageDistribution.map((result) =>
-			result.count > 0 ? 'rgba(75, 192, 192, 1)' : 'rgba(255, 99, 132, 1)'
-		);
+		// datasets[0].borderColor = results.damageDistribution.map((result) =>
+		// 	result.count > 0 ? 'rgba(75, 192, 192, 1)' : 'rgba(255, 99, 132, 1)'
+		// );
 		datasets[0].borderWidth = 1;
 	}
 </script>
