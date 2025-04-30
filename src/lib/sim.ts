@@ -15,7 +15,7 @@ export function runSim(attacker: Attacker, defender: Defender, itterations = 100
 
       const dieResult = parseInt((hitRoll.rolls[0] as unknown as RollResults).rolls[0].toString());
 
-      const hit = hitRoll.total >= defender.armorClass || dieResult === 20;
+      const hit = (hitRoll.total >= defender.armorClass || dieResult === 20) && dieResult !== 1;
       if (hit) {
         const isCrit = dieResult >= attack.critRange;
         const critMultiplier = isCrit && enableCritDamage ? attack.critMultiplier : 1;
