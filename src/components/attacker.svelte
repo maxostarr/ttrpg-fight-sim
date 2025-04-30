@@ -1,6 +1,37 @@
 <script lang="ts">
 	// import type { Attacker } from '$lib/types';
 	import { attacker } from '$lib/store.svelte';
+
+	function addAttack() {
+		if (attacker.attacks.length === 0) {
+			attacker.attacks.push({
+				hitBonus: 0,
+				hitOffset: 0,
+				damageRoll: '',
+				critRange: 20,
+				critMultiplier: 2
+			});
+			return;
+		}
+
+		const lastAttack = attacker.attacks[attacker.attacks.length - 1];
+		attacker.attacks.push({
+			...lastAttack
+		});
+	}
+
+	function removeAttack(index: number) {
+		attacker.attacks.splice(index, 1);
+		if (attacker.attacks.length === 0) {
+			attacker.attacks.push({
+				hitBonus: 0,
+				hitOffset: 0,
+				damageRoll: '',
+				critRange: 20,
+				critMultiplier: 2
+			});
+		}
+	}
 </script>
 
 <form class="mx-auto max-w-md space-y-4 rounded-lg bg-white p-6 shadow-md">
@@ -18,7 +49,7 @@
 			<!-- Remove button -->
 			<button
 				type="button"
-				on:click={() => attacker.attacks.splice(index, 1)}
+				on:click={() => removeAttack(index)}
 				class="absolute top-4 right-4 rounded-md bg-red-500 px-2 py-1 text-sm font-medium text-white hover:bg-red-600"
 			>
 				Remove
@@ -97,7 +128,7 @@
 
 	<button
 		type="button"
-		on:click={() => attacker.attacks.push({ ...attacker.attacks.at(-1) })}
+		on:click={() => addAttack()}
 		class="w-full rounded-md bg-blue-500 py-2 font-medium text-white transition-colors hover:bg-blue-600"
 	>
 		Add Attack
