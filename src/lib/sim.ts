@@ -7,8 +7,10 @@ import type RollResults from '@dice-roller/rpg-dice-roller/types/types/results/R
 
 export function runSim(attacker: Attacker, defender: Defender, itterations = 100, enableCritDamage = true): SimResult {
   const results = []
+  const roundResults = []
 
   for (let i = 0; i < itterations; i++) {
+    let roundDamage = 0;
     for (const attack of attacker.attacks) {
       const hitRoll = new DiceRoll(`1d20 + ${attack.hitBonus} + ${attack.hitOffset}`);
 
@@ -20,6 +22,7 @@ export function runSim(attacker: Attacker, defender: Defender, itterations = 100
         const critMultiplier = isCrit && enableCritDamage ? attack.critMultiplier : 1;
         const damageRoll = new DiceRoll(`{${Array(critMultiplier).fill(attack.damageRoll).join(',')}}`);
         const damage = damageRoll.total - defender.dr;
+        roundDamage += Math.max(damage, 0);
         results.push({
           attacker: attacker.name,
           defender: defender.name,
@@ -39,14 +42,19 @@ export function runSim(attacker: Attacker, defender: Defender, itterations = 100
         });
       }
     }
+    roundResults.push({
+      attacker: attacker.name,
+      defender: defender.name,
+      damage: roundDamage
+    });
   }
 
 
   const totalDamage = results.reduce((acc, result) => acc + result.damage, 0);
   const totalHits = results.filter(result => result.hit).length;
-  const minDamage = Math.min(...results.map(result => result.damage).filter(damage => damage > 0));
-  const maxDamage = Math.max(...results.map(result => result.damage));
-  const avgDamage = totalDamage / results.length;
+  const minDamage = Math.min(...roundResults.map(result => result.damage).filter(damage => damage > 0));
+  const maxDamage = Math.max(...roundResults.map(result => result.damage));
+  const avgDamage = totalDamage / roundResults.length;
   const hitRate = totalHits / results.length;
 
 
@@ -79,7 +87,8 @@ export function runSim(attacker: Attacker, defender: Defender, itterations = 100
     avgDamage,
     hitRate,
     damageDistribution,
-    results
+    results,
+    roundResults
   };
 
 }

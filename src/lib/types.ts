@@ -26,6 +26,12 @@ export type RawSimResult = {
   damageRoll: number;
 };
 
+export type RawRoundResult = {
+  attacker: string;
+  defender: string;
+  damage: number;
+};
+
 export type DamageDistribution = {
   range: {
     min: number;
@@ -44,4 +50,5 @@ export type SimResult = {
   hitRate: number;
   damageDistribution: DamageDistribution[];
   results: RawSimResult[];
+  roundResults: RawRoundResult[];
 };
