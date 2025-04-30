@@ -51,7 +51,7 @@
 		const results = runSim(attacker, defender, iterations);
 
 		// Update chart data with simulation results
-		labels = results.damageDistribution.map((result) => `${result.range.min}-${result.range.max}`);
+		labels = results.damageDistribution.map((result) => `${result.range.min}`);
 		datasets[0].data = results.damageDistribution.map((result) => result.count);
 
 		datasets[0].backgroundColor = results.damageDistribution.map((result) =>

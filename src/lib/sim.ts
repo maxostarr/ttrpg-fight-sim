@@ -45,20 +45,20 @@ export function runSim(attacker: Attacker, defender: Defender, itterations = 100
 
 
   // const NUM_BUCKETS = maxDamage - minDamage < 10 ? maxDamage - minDamage : Math.floor((maxDamage - minDamage) / 10);
-  const NUM_BUCKETS = maxDamage - minDamage;
+  const NUM_BUCKETS = (maxDamage - minDamage) + 1;
 
-  const bucketWidth = (maxDamage - minDamage) / NUM_BUCKETS;
+  // const bucketWidth = (maxDamage - minDamage) / NUM_BUCKETS;
   const damageDistribution: DamageDistribution[] = new Array(NUM_BUCKETS).fill(0).map((x, i) => ({
     count: 0,
     percent: 0,
     range: {
-      min: Math.floor(minDamage + i * bucketWidth),
-      max: Math.floor(minDamage + (i + 1) * bucketWidth)
+      min: Math.floor(minDamage + i),
+      max: Math.floor(minDamage + (i + 1))
     }
   } satisfies DamageDistribution));
 
   for (const result of results) {
-    const bucketIndex = Math.floor(result.damage / (maxDamage / NUM_BUCKETS));
+    const bucketIndex = result.damage
     if (bucketIndex >= 0 && bucketIndex < NUM_BUCKETS) {
       damageDistribution[bucketIndex].count++;
       damageDistribution[bucketIndex].percent = (damageDistribution[bucketIndex].count / results.length) * 100;
