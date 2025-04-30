@@ -43,12 +43,14 @@
 		}
 	]);
 	let iterations = $state(1000);
+	let misses = $state(0);
 
 	function runSimulation() {
 		// Placeholder for simulation logic
 		console.log('Running simulation...');
 
 		const results = runSim(attacker, defender, iterations);
+		misses = iterations - results.totalHits;
 
 		// Update chart data with simulation results
 		labels = results.damageDistribution.map((result) => `${result.range.min}`);
@@ -66,6 +68,13 @@
 </script>
 
 <Chart {datasets} {labels} />
+
+<!-- Misses display -->
+<div class="mt-4">
+	<p class="text-sm font-medium text-gray-700">
+		Misses: {misses} ({Math.round((misses / iterations) * 100)}%)
+	</p>
+</div>
 
 <button on:click={runSimulation} class="rounded bg-blue-500 px-4 py-2 text-white">
 	Run Simulation
