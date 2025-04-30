@@ -38,7 +38,7 @@ export function runSim(attacker: Attacker, defender: Defender, itterations = 100
 
   const totalDamage = results.reduce((acc, result) => acc + result.damage, 0);
   const totalHits = results.filter(result => result.hit).length;
-  const minDamage = Math.min(...results.map(result => result.damage).filter(damage => damage > 0));
+  const minDamage = Math.min(...results.map(result => result.damage));
   const maxDamage = Math.max(...results.map(result => result.damage));
   const avgDamage = totalDamage / results.length;
   const hitRate = totalHits / results.length;
