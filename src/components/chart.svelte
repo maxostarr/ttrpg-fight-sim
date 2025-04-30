@@ -55,7 +55,7 @@
 					labels,
 					datasets: [
 						{
-							label: '# of Rounds',
+							label: 'Round',
 							data: _data,
 							borderWidth: 1
 						}
