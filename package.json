@@ -40,5 +40,9 @@
 		"onlyBuiltDependencies": [
 			"esbuild"
 		]
+	},
+	"dependencies": {
+		"@dice-roller/rpg-dice-roller": "^5.5.1",
+		"chart.js": "^4.4.9"
 	}
 }
