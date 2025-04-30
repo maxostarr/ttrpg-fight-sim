@@ -110,7 +110,7 @@
 			<div>
 				<label class="mb-1 block text-sm font-medium text-gray-700"> Crit Range </label>
 				<input
-					type="text"
+					type="number"
 					bind:value={attack.critRange}
 					class="w-full rounded-md border border-gray-300 p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
 				/>
@@ -118,7 +118,7 @@
 			<div>
 				<label class="mb-1 block text-sm font-medium text-gray-700"> Crit Multiplier </label>
 				<input
-					type="text"
+					type="number"
 					bind:value={attack.critMultiplier}
 					class="w-full rounded-md border border-gray-300 p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
 				/>
