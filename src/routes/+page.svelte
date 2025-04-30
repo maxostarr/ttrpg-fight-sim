@@ -49,7 +49,6 @@
 		console.log('Running simulation...');
 
 		const results = runSim(attacker, defender, iterations);
-		console.log('🚀 ~ runSimulation ~ results:', results);
 
 		// Update chart data with simulation results
 		labels = results.damageDistribution.map((result) => `${result.range.min}-${result.range.max}`);
