@@ -2,7 +2,6 @@
 import { DiceRoll } from '@dice-roller/rpg-dice-roller';
 import type { Defender, Attacker, DamageDistribution, SimResult } from '$lib/types';
 import type RollResults from '@dice-roller/rpg-dice-roller/types/types/results/RollResults.js';
-import type ResultGroup from '@dice-roller/rpg-dice-roller/types/types/results/ResultGroup.js';
 
 // const NUM_BUCKETS = 10
 
