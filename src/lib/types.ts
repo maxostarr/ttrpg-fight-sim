@@ -2,6 +2,8 @@ export type Attack = {
   hitBonus: number;
   damageRoll: string;
   hitOffset: number;
+  critRange: number;
+  critMultiplier: number;
 };
 
 export type Attacker = {

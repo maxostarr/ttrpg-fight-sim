@@ -44,13 +44,16 @@
 	]);
 	let iterations = $state(1000);
 	let misses = $state(0);
+	let missPercentage = $state(0);
+	let enableCritDamage = $state(true);
 
 	function runSimulation() {
 		// Placeholder for simulation logic
 		console.log('Running simulation...');
 
-		const results = runSim(attacker, defender, iterations);
-		misses = iterations - results.totalHits;
+		const results = runSim(attacker, defender, iterations, enableCritDamage);
+		misses = iterations * attacker.attacks.length - results.totalHits;
+		missPercentage = Math.round((misses / (iterations * attacker.attacks.length)) * 100);
 
 		// Update chart data with simulation results
 		labels = results.damageDistribution.map((result) => `${result.range.min}`);
@@ -72,13 +75,25 @@
 <!-- Misses display -->
 <div class="mt-4">
 	<p class="text-sm font-medium text-gray-700">
-		Misses: {misses} ({Math.round((misses / iterations) * 100)}%)
+		Misses: {misses} ({missPercentage}%)
 	</p>
 </div>
 
 <button on:click={runSimulation} class="rounded bg-blue-500 px-4 py-2 text-white">
 	Run Simulation
 </button>
+
+<!-- Crit damage toggle -->
+<div class="mt-4">
+	<label class="inline-flex items-center">
+		<input
+			type="checkbox"
+			bind:checked={enableCritDamage}
+			class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+		/>
+		<span class="ml-2 text-sm font-medium text-gray-700">Enable Crit Damage</span>
+	</label>
+</div>
 
 <!-- Iterations input -->
 <div class="mt-4">

@@ -76,6 +76,22 @@
 					class="w-full rounded-md border border-gray-300 p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
 				/>
 			</div>
+			<div>
+				<label class="mb-1 block text-sm font-medium text-gray-700"> Crit Range </label>
+				<input
+					type="text"
+					bind:value={attack.critRange}
+					class="w-full rounded-md border border-gray-300 p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+				/>
+			</div>
+			<div>
+				<label class="mb-1 block text-sm font-medium text-gray-700"> Crit Multiplier </label>
+				<input
+					type="text"
+					bind:value={attack.critMultiplier}
+					class="w-full rounded-md border border-gray-300 p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+				/>
+			</div>
 		</div>
 	{/each}
 

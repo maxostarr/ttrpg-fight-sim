@@ -25,12 +25,16 @@ export const attacker: Attacker = $state({
     {
       hitBonus: 5,
       damageRoll: '1d8+3',
-      hitOffset: 0
+      hitOffset: 0,
+      critRange: 19,
+      critMultiplier: 2
     },
     {
       hitBonus: 7,
       damageRoll: '2d6+2',
-      hitOffset: 0
+      hitOffset: 0,
+      critRange: 20,
+      critMultiplier: 3
     }
   ]
 });
