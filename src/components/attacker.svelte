@@ -97,7 +97,7 @@
 
 	<button
 		type="button"
-		on:click={() => attacker.attacks.push(attacker.attacks.at(-1))}
+		on:click={() => attacker.attacks.push({ ...attacker.attacks.at(-1) })}
 		class="w-full rounded-md bg-blue-500 py-2 font-medium text-white transition-colors hover:bg-blue-600"
 	>
 		Add Attack
