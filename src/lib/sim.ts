@@ -1,9 +1,29 @@
-
 import { DiceRoll } from '@dice-roller/rpg-dice-roller';
 import type { Defender, Attacker, DamageDistribution, SimResult } from '$lib/types';
-import type RollResults from '@dice-roller/rpg-dice-roller/types/types/results/RollResults.js';
 
 // const NUM_BUCKETS = 10
+
+type Rolls = InstanceType<typeof DiceRoll>['rolls'];
+
+const getFirstDieResult = (rolls: Rolls): number => {
+  if (rolls.length === 0) {
+    return 0;
+  }
+  const firstRoll = rolls[0];
+  if (typeof firstRoll === 'number') {
+    return firstRoll;
+  }
+  if (typeof firstRoll === 'string') {
+    const match = firstRoll.match(/(\d+)/);
+    if (match) {
+      return parseInt(match[1], 10);
+    }
+  }
+  if (typeof firstRoll === 'object' && 'value' in firstRoll) {
+    return firstRoll.value;
+  }
+  return 0;
+};
 
 export function runSim(attacker: Attacker, defender: Defender, itterations = 100, enableCritDamage = true): SimResult {
   const results = []
@@ -14,7 +34,8 @@ export function runSim(attacker: Attacker, defender: Defender, itterations = 100
     for (const attack of attacker.attacks) {
       const hitRoll = new DiceRoll(`1d20 + ${attack.hitBonus} + ${attack.hitOffset}`);
 
-      const dieResult = parseInt((hitRoll.rolls[0] as unknown as RollResults).rolls[0].toString());
+      // const dieResult = parseInt((hitRoll.rolls[0] as unknown as RollResults).rolls[0].toString());
+      const dieResult = getFirstDieResult(hitRoll.rolls);
 
       const hit = (hitRoll.total >= defender.armorClass || dieResult === 20) && dieResult !== 1;
       if (hit) {
