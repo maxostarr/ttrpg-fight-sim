@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getColor } from '$lib/getColor';
+	import { getColor } from '$lib/color';
 	import { runSim } from '$lib/sim';
 	import { attacker, defender } from '$lib/store.svelte';
 	import Attacker from '../components/attacker.svelte';
