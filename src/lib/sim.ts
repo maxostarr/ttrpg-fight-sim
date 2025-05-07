@@ -1,7 +1,6 @@
 import { DiceRoll } from '@dice-roller/rpg-dice-roller';
 import type { Defender, Attacker, DamageDistribution, SimResult } from '$lib/types';
 
-// const NUM_BUCKETS = 10
 
 type Rolls = InstanceType<typeof DiceRoll>['rolls'];
 
@@ -34,7 +33,6 @@ export function runSim(attacker: Attacker, defender: Defender, itterations = 100
     for (const attack of attacker.attacks) {
       const hitRoll = new DiceRoll(`1d20 + ${attack.hitBonus} + ${attack.hitOffset}`);
 
-      // const dieResult = parseInt((hitRoll.rolls[0] as unknown as RollResults).rolls[0].toString());
       const dieResult = getFirstDieResult(hitRoll.rolls);
 
       const hit = (hitRoll.total >= defender.armorClass || dieResult === 20) && dieResult !== 1;
@@ -66,21 +64,16 @@ export function runSim(attacker: Attacker, defender: Defender, itterations = 100
   }
 
 
-  // const totalDamage = results.reduce((acc, result) => acc + result.damage, 0);
   const totalDamage = roundResults.reduce((acc, result) => acc + result.damage, 0);
-  // const totalHits = results.filter(result => result.hit).length;
   const totalHits = roundResults.reduce((acc, result) => acc + result.attacks.filter(attack => attack.hit).length, 0);
   const minDamage = Math.min(...roundResults.map(result => result.damage).filter(damage => damage > 0));
   const maxDamage = Math.max(...roundResults.map(result => result.damage));
   const avgDamage = totalDamage / roundResults.length;
-  // const hitRate = totalHits / results.length;
   const hitRate = totalHits / (roundResults.length * attacker.attacks.length);
 
 
-  // const NUM_BUCKETS = maxDamage - minDamage < 10 ? maxDamage - minDamage : Math.floor((maxDamage - minDamage) / 10);
   const NUM_BUCKETS = (maxDamage - minDamage) + 1;
 
-  // const bucketWidth = (maxDamage - minDamage) / NUM_BUCKETS;
   const damageDistribution: DamageDistribution[] = new Array(NUM_BUCKETS).fill(0).map((x, i) => ({
     count: 0,
     percent: 0,
