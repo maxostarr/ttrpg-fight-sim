@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { getColor } from '$lib/getColor';
 	import { runSim } from '$lib/sim';
 	import { attacker, defender } from '$lib/store.svelte';
 	import Attacker from '../components/attacker.svelte';
@@ -72,7 +73,7 @@
 			attacker.attacks.map((attack, i) => ({
 				label: `Attack ${i + 1}`,
 				data: [] as number[],
-				backgroundColor: 'rgba(75, 192, 192, 0.2)',
+				backgroundColor: getColor(i, attacker.attacks.length),
 				borderColor: 'rgba(75, 192, 192, 1)',
 				borderWidth: 1
 			}))
