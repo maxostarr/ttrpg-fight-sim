@@ -84,7 +84,8 @@ export function runSim(attacker: Attacker, defender: Defender, itterations = 100
   const damageDistribution: DamageDistribution[] = new Array(NUM_BUCKETS).fill(0).map((x, i) => ({
     count: 0,
     percent: 0,
-    damage: minDamage + i
+    damage: minDamage + i,
+    perAttack: []
   } satisfies DamageDistribution));
 
   for (const result of roundResults) {
@@ -92,6 +93,11 @@ export function runSim(attacker: Attacker, defender: Defender, itterations = 100
     if (bucketIndex >= 0 && bucketIndex < NUM_BUCKETS) {
       damageDistribution[bucketIndex].count++;
       damageDistribution[bucketIndex].percent = (damageDistribution[bucketIndex].count / roundResults.length) * 100;
+      result.attacks.forEach((attack, index) => {
+        if (attack.hit) {
+          damageDistribution[bucketIndex].perAttack[index] = (damageDistribution[bucketIndex].perAttack[index] || 0) + 1;
+        }
+      });
     }
   }
 

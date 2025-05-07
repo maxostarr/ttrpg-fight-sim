@@ -25,20 +25,22 @@
 		{
 			label: 'Votes',
 			data: [0, 0, 0, 0, 0],
-			backgroundColor: [
-				'rgba(75, 192, 192, 0.2)',
-				'rgba(255, 99, 132, 0.2)',
-				'rgba(255, 206, 86, 0.2)',
-				'rgba(75, 192, 192, 0.2)',
-				'rgba(153, 102, 255, 0.2)'
-			],
-			borderColor: [
-				'rgba(75, 192, 192, 1)',
-				'rgba(255, 99, 132, 1)',
-				'rgba(255, 206, 86, 1)',
-				'rgba(75, 192, 192, 1)',
-				'rgba(153, 102, 255, 1)'
-			],
+			// backgroundColor: [
+			// 	'rgba(75, 192, 192, 0.2)',
+			// 	'rgba(255, 99, 132, 0.2)',
+			// 	'rgba(255, 206, 86, 0.2)',
+			// 	'rgba(75, 192, 192, 0.2)',
+			// 	'rgba(153, 102, 255, 0.2)'
+			// ],
+			// borderColor: [
+			// 	'rgba(75, 192, 192, 1)',
+			// 	'rgba(255, 99, 132, 1)',
+			// 	'rgba(255, 206, 86, 1)',
+			// 	'rgba(75, 192, 192, 1)',
+			// 	'rgba(153, 102, 255, 1)'
+			// ],
+			backgroundColor: 'rgba(75, 192, 192, 0.2)',
+			borderColor: 'rgba(75, 192, 192, 1)',
 			borderWidth: 1
 		}
 	]);
@@ -57,7 +59,7 @@
 		missPercentage = Math.round((misses / (iterations * attacker.attacks.length)) * 100);
 
 		// Update chart data with simulation results
-		labels = results.damageDistribution.map((result) => `${result.range.min}`);
+		labels = results.damageDistribution.map((result) => `${result.damage}`);
 		datasets[0].data = results.damageDistribution.map((result) => result.count);
 
 		// datasets[0].backgroundColor = results.damageDistribution.map((result) =>

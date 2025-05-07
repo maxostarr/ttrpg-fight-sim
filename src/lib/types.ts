@@ -33,6 +33,7 @@ export type DamageDistribution = {
   damage: number;
   count: number;
   percent: number;
+  perAttack: Array<number>;
 }
 
 export type SimResult = {
