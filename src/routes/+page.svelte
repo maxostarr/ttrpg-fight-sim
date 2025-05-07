@@ -23,7 +23,7 @@
 	let labels = $state(['0-0', '0-0', '0-0', '0-0', '0-0']);
 	let datasets = $state([
 		{
-			label: 'Votes',
+			label: 'Attack 1',
 			data: [0, 0, 0, 0, 0],
 			// backgroundColor: [
 			// 	'rgba(75, 192, 192, 0.2)',
@@ -60,7 +60,25 @@
 
 		// Update chart data with simulation results
 		labels = results.damageDistribution.map((result) => `${result.damage}`);
-		datasets[0].data = results.damageDistribution.map((result) => result.count);
+
+		datasets = results.damageDistribution.reduce(
+			(acc, result) => {
+				result.perAttack.forEach((attackResult, i) => {
+					acc[i].data.push(attackResult);
+				});
+
+				return acc;
+			},
+			attacker.attacks.map((attack, i) => ({
+				label: `Attack ${i + 1}`,
+				data: [] as number[],
+				backgroundColor: 'rgba(75, 192, 192, 0.2)',
+				borderColor: 'rgba(75, 192, 192, 1)',
+				borderWidth: 1
+			}))
+		);
+
+		// datasets[0].data = results.damageDistribution.map((result) => result.count);
 
 		// datasets[0].backgroundColor = results.damageDistribution.map((result) =>
 		// 	result.count > 0 ? 'rgba(75, 192, 192, 0.2)' : 'rgba(255, 99, 132, 0.2)'
@@ -69,7 +87,7 @@
 		// datasets[0].borderColor = results.damageDistribution.map((result) =>
 		// 	result.count > 0 ? 'rgba(75, 192, 192, 1)' : 'rgba(255, 99, 132, 1)'
 		// );
-		datasets[0].borderWidth = 1;
+		// datasets[0].borderWidth = 1;
 	}
 </script>
 

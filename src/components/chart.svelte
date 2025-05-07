@@ -5,6 +5,13 @@
 	// Register only the necessary components for bar charts
 	// Chart.register(BarController, CategoryScale, LinearScale, BarElement);
 
+	type Dataset = {
+		label: string;
+		data: number[];
+		backgroundColor?: string;
+		borderColor?: string;
+		borderWidth?: number;
+	};
 	// Props: data should be an object with `labels` and `datasets` keys,
 	// for example: { labels: ['Jan', 'Feb'], datasets: [{ label: 'Sales', data: [10, 20], backgroundColor: 'blue' }] }
 	let {
@@ -12,13 +19,7 @@
 		labels
 	}: {
 		labels: string[];
-		datasets: {
-			label: string;
-			data: number[];
-			backgroundColor?: string;
-			borderColor?: string;
-			borderWidth?: number;
-		}[];
+		datasets: Dataset[];
 	} = $props();
 
 	let chartCanvas: any;
@@ -47,19 +48,25 @@
 
 	let chartObject: any;
 
-	function chart(node: any, data: any) {
-		function setupChart(_data: any) {
+	function chart(node: any, data: Dataset[]) {
+		function setupChart(_data: Dataset[]) {
 			chartObject = new Chart(node, {
 				type: 'bar',
 				data: {
 					labels,
-					datasets: [
-						{
-							label: 'Round',
-							data: _data,
-							borderWidth: 1
-						}
-					]
+					// datasets: [
+					// 	{
+					// 		label: 'Round',
+					// 		data: _data,
+					// 		borderWidth: 1
+					// 	}
+					// ]
+					datasets: _data.map((dataset) => ({
+						...dataset,
+						backgroundColor: dataset.backgroundColor || 'rgba(75, 192, 192, 0.2)',
+						borderColor: dataset.borderColor || 'rgba(75, 192, 192, 1)',
+						borderWidth: dataset.borderWidth || 1
+					}))
 				},
 
 				options: {
@@ -74,14 +81,19 @@
 							}
 						}
 					},
+					responsive: true,
 					scales: {
 						y: {
 							beginAtZero: true,
+							stacked: true,
 
 							title: {
 								display: true,
 								text: 'Number of Hits'
 							}
+						},
+						x: {
+							stacked: true
 						}
 					}
 				}
@@ -89,7 +101,7 @@
 		}
 		setupChart(data);
 		return {
-			update(data: any) {
+			update(data: Dataset[]) {
 				chartObject.destroy();
 				setupChart(data);
 			},
@@ -102,7 +114,7 @@
 
 <div class="chart-container">
 	<!-- <canvas bind:this={chartCanvas}></canvas> -->
-	<canvas bind:this={chartCanvas} use:chart={$state.snapshot(datasets[0].data)}></canvas>
+	<canvas bind:this={chartCanvas} use:chart={$state.snapshot(datasets)}></canvas>
 </div>
 
 <style>
