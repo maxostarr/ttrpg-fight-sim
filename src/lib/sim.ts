@@ -26,11 +26,11 @@ const getFirstDieResult = (rolls: Rolls): number => {
 };
 
 export function runSim(attacker: Attacker, defender: Defender, itterations = 100, enableCritDamage = true): SimResult {
-  const results = []
   const roundResults = []
 
   for (let i = 0; i < itterations; i++) {
     let roundDamage = 0;
+    const attackResults = []
     for (const attack of attacker.attacks) {
       const hitRoll = new DiceRoll(`1d20 + ${attack.hitBonus} + ${attack.hitOffset}`);
 
@@ -44,18 +44,14 @@ export function runSim(attacker: Attacker, defender: Defender, itterations = 100
         const damageRoll = new DiceRoll(`{${Array(critMultiplier).fill(attack.damageRoll).join(',')}}`);
         const damage = damageRoll.total - defender.dr;
         roundDamage += Math.max(damage, 0);
-        results.push({
-          attacker: attacker.name,
-          defender: defender.name,
+        attackResults.push({
           hit: true,
           damage: Math.max(damage, 0),
           hitRoll: hitRoll.total,
           damageRoll: damageRoll.total
         });
       } else {
-        results.push({
-          attacker: attacker.name,
-          defender: defender.name,
+        attackResults.push({
           hit: false,
           damage: 0,
           hitRoll: hitRoll.total,
@@ -64,19 +60,21 @@ export function runSim(attacker: Attacker, defender: Defender, itterations = 100
       }
     }
     roundResults.push({
-      attacker: attacker.name,
-      defender: defender.name,
+      attacks: attackResults,
       damage: roundDamage
     });
   }
 
 
-  const totalDamage = results.reduce((acc, result) => acc + result.damage, 0);
-  const totalHits = results.filter(result => result.hit).length;
+  // const totalDamage = results.reduce((acc, result) => acc + result.damage, 0);
+  const totalDamage = roundResults.reduce((acc, result) => acc + result.damage, 0);
+  // const totalHits = results.filter(result => result.hit).length;
+  const totalHits = roundResults.reduce((acc, result) => acc + result.attacks.filter(attack => attack.hit).length, 0);
   const minDamage = Math.min(...roundResults.map(result => result.damage).filter(damage => damage > 0));
   const maxDamage = Math.max(...roundResults.map(result => result.damage));
   const avgDamage = totalDamage / roundResults.length;
-  const hitRate = totalHits / results.length;
+  // const hitRate = totalHits / results.length;
+  const hitRate = totalHits / (roundResults.length * attacker.attacks.length);
 
 
   // const NUM_BUCKETS = maxDamage - minDamage < 10 ? maxDamage - minDamage : Math.floor((maxDamage - minDamage) / 10);
@@ -86,21 +84,20 @@ export function runSim(attacker: Attacker, defender: Defender, itterations = 100
   const damageDistribution: DamageDistribution[] = new Array(NUM_BUCKETS).fill(0).map((x, i) => ({
     count: 0,
     percent: 0,
-    range: {
-      min: Math.floor(minDamage + i),
-      max: Math.floor(minDamage + (i + 1))
-    }
+    damage: minDamage + i
   } satisfies DamageDistribution));
 
   for (const result of roundResults) {
     const bucketIndex = result.damage - minDamage;
     if (bucketIndex >= 0 && bucketIndex < NUM_BUCKETS) {
       damageDistribution[bucketIndex].count++;
-      damageDistribution[bucketIndex].percent = (damageDistribution[bucketIndex].count / results.length) * 100;
+      damageDistribution[bucketIndex].percent = (damageDistribution[bucketIndex].count / roundResults.length) * 100;
     }
   }
 
   return {
+    attacker: attacker.name,
+    defender: defender.name,
     totalDamage,
     totalHits,
     minDamage,
@@ -108,8 +105,7 @@ export function runSim(attacker: Attacker, defender: Defender, itterations = 100
     avgDamage,
     hitRate,
     damageDistribution,
-    results,
-    roundResults
+    results: roundResults,
   };
 
 }

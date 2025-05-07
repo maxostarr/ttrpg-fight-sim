@@ -18,8 +18,6 @@ export type Defender = {
 };
 
 export type RawSimResult = {
-  attacker: string;
-  defender: string;
   hit: boolean;
   damage: number;
   hitRoll: number;
@@ -27,16 +25,12 @@ export type RawSimResult = {
 };
 
 export type RawRoundResult = {
-  attacker: string;
-  defender: string;
   damage: number;
+  attacks: RawSimResult[];
 };
 
 export type DamageDistribution = {
-  range: {
-    min: number;
-    max: number;
-  };
+  damage: number;
   count: number;
   percent: number;
 }
@@ -48,7 +42,8 @@ export type SimResult = {
   maxDamage: number;
   avgDamage: number;
   hitRate: number;
+  attacker: string;
+  defender: string;
   damageDistribution: DamageDistribution[];
-  results: RawSimResult[];
-  roundResults: RawRoundResult[];
+  results: RawRoundResult[];
 };
